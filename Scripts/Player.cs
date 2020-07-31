@@ -21,6 +21,10 @@ public class Player : MonoBehaviour {
 	private UnityAction arrivalAction = null;
 	private bool menuActive = false;
 	private float previousWalkTime = 0.0f;
+	private bool quitActive = false;
+	public CanvasGroup quit;
+	public Button quitYes;
+	public Button quitNo;
 
 	private void Awake() {
 		agent = GetComponent<NavMeshAgent>();
@@ -29,6 +33,8 @@ public class Player : MonoBehaviour {
 		cameraRotation = mainCamera.transform.localRotation;
 		animator = GetComponent<Animator>();
 		goal.GetComponent<Renderer>().enabled = false;
+		quitYes.onClick.AddListener(Application.Quit);
+		quitNo.onClick.AddListener(hideQuit);
 	}
 
     private void Update() {
@@ -55,6 +61,15 @@ public class Player : MonoBehaviour {
 				footsteps.play();
 			}
 			previousWalkTime = walkTime;
+		}
+
+		if (Input.GetKeyDown("escape")) {
+			showQuit(!quitActive);
+		}
+		if (quitActive) {
+			hover.enabled = false;
+			hoverText.enabled = false;
+			return;
 		}
 
 		if (Input.GetMouseButtonUp(1)) {
@@ -148,6 +163,24 @@ public class Player : MonoBehaviour {
 	}
 
 	public bool getMenuActive() {
-		return menuActive;
+		return menuActive || quitActive;
+	}
+
+	private void showQuit(bool show) {
+		quitActive = show;
+		quit.interactable = show;
+		quit.blocksRaycasts = show;
+		quit.alpha = show ? 1.0f : 0.0f;
+		if (show) {
+			hover.enabled = false;
+			hoverText.enabled = false;
+		} else {
+			skipUpdate = true;
+			Dialogue.skipClick = true;
+		}
+	}
+
+	private void hideQuit() {
+		showQuit(false);
 	}
 }

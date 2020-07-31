@@ -81,7 +81,7 @@ public class Dialogue : MonoBehaviour {
 	}
 
 	private void tutorial2() {
-		say("Use the left mouse button to move around and interact with things, and the right mouse button to view your inventory.", tutorial3);
+		say("Use the LEFT MOUSE BUTTON to move around and interact with things, and the RIGHT MOUSE BUTTON to view your inventory. Press ESCAPE to quit the game.", tutorial3);
 	}
 
 	private void tutorial3() {
